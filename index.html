@@ -32,6 +32,12 @@ button:hover{background:#fff}
 <div class="card"><b>UFOLOGIA</b><div id="ufoStatus">En espera...</div><button onclick="scanUfo()">ESCANEAR</button></div>
 <div class="card"><b>FOROS ASTRONOMIA</b><div id="astroStatus">En espera...</div><button onclick="scanAstro()">ESCANEAR</button></div>
 </div>
+<div class="card" style="border:2px solid #ff0; grid-column: span 2;">
+<b style="color:#ff0;">🔥 HASHTAGS GLOBALES - 78 TAGS</b>
+<div id="hashStatus" style="margin:5px 0; font-size:11px;">78 hashtags activos<br>ES/EN/PT/FR/IT/JP/KR/CN/RU/AR</div>
+<div style="max-height:120px; overflow-y:auto; font-size:10px; background:#111; padding:5px; margin:5px 0;" id="hashListMini"></div>
+<button onclick="scanHashtags()" style="background:#ff0;">ESCANEAR HASHTAGS</button>
+</div>
 <div class="results">
 <b>RESULTADOS: REDES - HASHTAGS GLOBALES</b>
 <div style="margin:10px 0" id="hashtagList"></div>
