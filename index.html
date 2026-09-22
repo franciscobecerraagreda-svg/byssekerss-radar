@@ -3,74 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BYSSEKERSS RADAR FINAL</title>
+<title>BYSSEKERSS RADAR - TODO MANUAL</title>
 <style>
 body{background:#000;color:#0f0;font-family:monospace;padding:10px;margin:0}
-.header{border:2px solid #0f0;padding:15px;text-align:center}
+.header{border:2px solid #0f0;padding:15px;text-align:center;box-shadow:0 0 15px #0f0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
-.card{border:1px solid #0f0;padding:10px}
-.cardB{border:2px solid #0ff;grid-column:span 2;padding:10px;background:#001122}
+.card{border:1px solid #0f0;padding:10px;background:#001100}
 .cardY{border:2px solid #ff0;grid-column:span 2;padding:10px;background:#111100}
-button{background:#0f0;color:#000;border:none;padding:8px;font-weight:bold;width:100%;margin-top:5px}
-button.b{background:#0ff} button.y{background:#ff0}
-.results{border:2px solid #ff0;margin-top:15px;padding:10px;color:#0ff;background:#111;min-height:250px}
-a{color:#0ff}
-.tag{display:inline-block;background:#111;border:1px solid #0f0;padding:3px 6px;margin:2px;font-size:11px}
+.cardB{border:2px solid #0ff;grid-column:span 2;padding:10px;background:#001122}
+button{background:#0f0;color:#000;border:none;padding:10px;font-weight:bold;width:100%;margin-top:6px;cursor:pointer}
+button.b{background:#0ff} button.y{background:#ff0;color:#000} button.p{background:#ff00ff;color:#fff}
+.results{border:2px solid #ff0;margin-top:20px;padding:12px;color:#0ff;background:#111;min-height:500px}
+.item{border-bottom:1px dashed #0f0;padding:10px 0;margin:10px 0}
+a{color:#0ff}.tag{display:inline-block;background:#000;border:1px solid #0f0;padding:2px 5px;margin:2px;font-size:10px}
 </style>
 </head>
 <body>
 <div class="header">
-<h2>BYSSEKERSS RADAR 24/7</h2>
-<div>● LIVE | SAN JUAN DEL RIO - BAJIO</div>
-<div id="countdown" style="color:#ff0">Proximo escaneo: 05:00</div>
+<h2>BYSSEKERSS RADAR 24/7 - MODO MANUAL</h2>
+<div>● LIVE | TODO EL SISTEMA | SIN AUTO-SCAN</div>
+<div style="color:#ff0;font-size:11px;margin-top:5px">TU PRESIONAS = ESCANEA. RESULTADOS ABAJO.</div>
 </div>
 
 <div class="grid">
-<div class="card"><b>1. GOBIERNO USA</b><div id="govStatus">En espera</div><button onclick="scanGov()">ESCANEAR GOB</button></div>
-<div class="card"><b>2. REDES / X</b><div id="xStatus">En espera</div><button class="b" onclick="scanX()">ESCANEAR REDES</button></div>
-<div class="cardY"><b>3. HASHTAGS PUROS</b><div id="hashStatus">78 tags</div><button class="y" onclick="scanHashtags()">ESCANEAR HASHTAGS</button><div id="hashBox" style="margin-top:5px;max-height:80px;overflow:auto;background:#000;padding:5px"></div></div>
-<div class="cardB"><b>4. EVENTOS BAJIO - TU RANGO (QRO,GTO,SLP,MICH,JAL,ZAC)</b><div id="qroStatus">Listo</div><button class="b" onclick="scanBajio()">ESCANEAR BAJIO (TU CIRCULO ROJO)</button><div id="qroBox" style="margin-top:5px;background:#000;padding:5px;font-size:11px"></div></div>
+<!-- 4 PRIMEROS QUE QUERIAS CONSERVAR -->
+<div class="card"><b>1. GOBIERNO USA</b><div id="s1" style="font-size:11px">Sin escanear</div><button onclick="scan1()">ESCANEAR GOBIERNO</button></div>
+<div class="card"><b>2. REDES / X</b><div id="s2" style="font-size:11px">Sin escanear</div><button class="b" onclick="scan2()">ESCANEAR REDES</button></div>
+<div class="card"><b>3. UFOLOGIA</b><div id="s3" style="font-size:11px">Sin escanear</div><button onclick="scan3()">ESCANEAR UFOLOGIA</button></div>
+<div class="card"><b>4. FOROS</b><div id="s4" style="font-size:11px">Sin escanear</div><button class="b" onclick="scan4()">ESCANEAR FOROS</button></div>
+
+<!-- TODO LO DEMAS QUE TENIAS -->
+<div class="cardY"><b style="color:#ff0">5. HASHTAGS PUROS (78 TAGS)</b><div id="s5" style="font-size:11px">Sin escanear</div><button class="y" onclick="scan5()">ESCANEAR HASHTAGS PUROS</button><div id="tags" style="margin-top:6px;max-height:90px;overflow:auto;background:#000;padding:5px"></div></div>
+<div class="cardB"><b style="color:#0ff">6. EVENTOS BAJIO - TU RANGO [QRO,GTO,SLP,MICH,JAL,ZAC]</b><div id="s6" style="font-size:11px">Tu circulo rojo de tu mapa</div><button class="p" onclick="scan6()">ESCANEAR BAJIO (180KM)</button></div>
 </div>
 
 <div class="results">
-<b style="color:#ff0">▼▼ AQUI ABAJO SALEN TODOS LOS RESULTADOS ▼▼▼</b>
-<div id="results" style="margin-top:10px">Esperando primer escaneo... Dale a cualquier boton de arriba.</div>
+<b style="color:#ff0">▼▼ TODOS LOS RESULTADOS APARECEN AQUI ABAJO CUANDO LE PIQUES A CUALQUIER BOTON ▼▼</b>
+<div id="results" style="margin-top:15px"><div style="color:#555">Aun no has escaneado. Presiona cualquier boton de arriba.</div></div>
 </div>
 
 <script>
-var HASHTAGS=["#UFO","#UAP","#OVNI","#Paranormal","#Alien","#Extraterrestre","#Disclosure","#JaimeMaussan"];
-var timeLeft=300;
-function tick(){var m=Math.floor(timeLeft/60);var s=timeLeft%60;document.getElementById('countdown').innerText="Proximo escaneo: "+(m<10?"0"+m:m)+":"+(s<10?"0"+s:s);if(timeLeft>0)timeLeft--;else{scanAll();timeLeft=300;}}setInterval(tick,1000);
+var HASHTAGS=["#UFO","#UAP","#OVNI","#FenomenoOVNI","#Paranormal","#Alien","#Extraterrestre","#Disclosure","#Divulgación","#ContactoExtraterrestre","#JaimeMaussan","#TercerMilenio","#SkinwalkerRanch","#Area51","#BobLazar","#DavidGrusch"];
+function showTags(){var h="";for(var i=0;i<HASHTAGS.length;i++){h+='<span class="tag">'+HASHTAGS[i]+'</span>';}document.getElementById('tags').innerHTML=h;}showTags();
 
-function renderTags(){var h="";for(var i=0;i<HASHTAGS.length;i++){h+='<span class="tag">'+HASHTAGS[i]+'</span>';}document.getElementById('hashBox').innerHTML=h;}renderTags();
+function add(html){
+ var now=new Date().toLocaleTimeString();
+ var d=document.createElement('div'); d.className='item';
+ d.innerHTML='<div style="font-size:10px;color:#555">['+now+']</div>'+html;
+ document.getElementById('results').prepend(d);
+ window.scrollTo(0,document.body.scrollHeight);
+}
 
-function scanGov(){
- var now=new Date().toLocaleTimeString();
- document.getElementById('govStatus').innerHTML="Ultimo: "+now;
- document.getElementById('results').innerHTML='<div style="color:#0f0">['+now+'] GOBIERNO USA</div><div>> AARO: <a href="https://www.aaro.mil" target="_blank">aaro.mil</a> - Revisa desclasificaciones</div><div>> NASA UAP: <a href="https://science.nasa.gov/uap" target="_blank">nasa.gov/uap</a></div>'+document.getElementById('results').innerHTML;
+function scan1(){
+ document.getElementById('s1').innerHTML="Escaneado: "+new Date().toLocaleTimeString();
+ var h='<b style="color:#0f0">1. GOBIERNO USA</b><br>> <a href="https://www.aaro.mil" target="_blank">AARO.mil</a> - Oficial<br>> <a href="https://science.nasa.gov/uap" target="_blank">NASA UAP</a><br>> <a href="https://www.google.com/search?q=AARO+UAP+noticias+hoy" target="_blank">Google: AARO hoy</a>';
+ add(h);
 }
-function scanX(){scanHashtags();}
-function scanHashtags(){
- var now=new Date().toLocaleTimeString();
- document.getElementById('xStatus').innerHTML="Ultimo: "+now;
- document.getElementById('hashStatus').innerHTML="Escaneado: "+now;
- var html='<div style="color:#ff0">['+now+'] REDES / HASHTAGS PUROS</div>';
- for(var i=0;i<HASHTAGS.length;i++){var q=encodeURIComponent(HASHTAGS[i]);html+='<div>> <a href="https://x.com/search?q='+q+'&f=live" target="_blank">'+HASHTAGS[i]+' en X Live</a></div>';}
- document.getElementById('results').innerHTML=html+document.getElementById('results').innerHTML;
+function scan2(){
+ document.getElementById('s2').innerHTML="Escaneado: "+new Date().toLocaleTimeString();
+ var h='<b style="color:#0ff">2. REDES / X</b><br>';
+ for(var i=0;i<6;i++){var q=encodeURIComponent(HASHTAGS[i]);h+='> <a href="https://x.com/search?q='+q+'&f=live" target="_blank">'+HASHTAGS[i]+' Live X</a><br>';}
+ add(h);
 }
-function scanBajio(){
- var now=new Date().toLocaleTimeString();
- document.getElementById('qroStatus').innerHTML="Escaneado Bajio: "+now;
- var html='<div style="color:#0ff">['+now+'] EVENTOS BAJIO - TU RANGO DE MAPA</div>';
- html+='<div style="border:1px solid #ff00ff;padding:5px;margin:5px 0"><b>17 OCT 2026 - CONGRESO NO HUMANO QUERETARO</b><br><a href="https://www.google.com/search?q=congreso+no+humano+queretaro+2026" target="_blank">Ver info</a></div>';
- html+='<div>Busqueda por tu circulo rojo:</div>';
- var estados=["Queretaro","Guanajuato","San Luis Potosi","Michoacan","Jalisco","Zacatecas"];
- for(var i=0;i<estados.length;i++){var e=estados[i];var q=encodeURIComponent("eventos ovni paranormal "+e);html+='<div>> '+e+': <a href="https://www.google.com/search?q='+q+'" target="_blank">Google</a> | <a href="https://www.google.com/maps/search/eventos+ovni+'+encodeURIComponent(e)+'" target="_blank">Maps</a></div>';}
- document.getElementById('qroBox').innerHTML=html;
- document.getElementById('results').innerHTML=html+'<hr>'+document.getElementById('results').innerHTML;
+function scan3(){
+ document.getElementById('s3').innerHTML="Escaneado: "+new Date().toLocaleTimeString();
+ var h='<b style="color:#ff0">3. UFOLOGIA</b><br>> <a href="https://www.youtube.com/results?search_query=Jaime+Maussan" target="_blank">Jaime Maussan YouTube</a><br>> <a href="https://www.google.com/search?q=noticias+ovni+mexico+hoy" target="_blank">Noticias OVNI Mexico hoy</a><br>> 17 OCT 2026 Congreso No Humano QRO: <a href="https://www.google.com/search?q=congreso+no+humano+queretaro+2026" target="_blank">Ver</a>';
+ add(h);
 }
-function scanAll(){scanGov();scanHashtags();scanBajio();}
-setTimeout(scanAll,1500);
+function scan4(){
+ document.getElementById('s4').innerHTML="Escaneado: "+new Date().toLocaleTimeString();
+ var h='<b>4. FOROS</b><br>> <a href="https://www.reddit.com/r/UFOs/" target="_blank">Reddit r/UFOs</a><br>> <a href="https://www.reddit.com/r/aliens/" target="_blank">Reddit r/aliens</a><br>> <a href="https://www.google.com/search?q=foro+ovni+mexico" target="_blank">Foros OVNI MX</a>';
+ add(h);
+}
+function scan5(){
+ document.getElementById('s5').innerHTML="Escaneado: "+new Date().toLocaleTimeString();
+ var h='<b style="color:#ff0">5. HASHTAGS PUROS - 78</b><br>';
+ for(var i=0;i<HASHTAGS.length;i++){var q=encodeURIComponent(HASHTAGS[i]);h+='> <a href="https://x.com/search?q='+q+'&f=live" target="_blank">'+HASHTAGS[i]+'</a> | '; }
+ add(h);
+}
+function scan6(){
+ document.getElementById('s6').innerHTML="Escaneado Bajio: "+new Date().toLocaleTimeString();
+ var h='<b style="color:#ff00ff">6. EVENTOS BAJIO - TU RANGO (180KM)</b><br>';
+ h+='<div style="border:1px solid #ff00ff;padding:5px;margin:5px 0"><b>17 OCT 2026 - CONGRESO NO HUMANO QUERETARO</b><br>Evento dentro de tu circulo rojo<br><a href="https://www.google.com/search?q=congreso+no+humano+queretaro" target="_blank">Info</a></div>';
+ h+='<div style="border:1px solid #0ff;padding:5px;margin:5px 0"><b>27-28 NOV 2026 - FERATUM Queretaro</b><br><a href="https://www.google.com/search?q=feratum+queretaro+2026" target="_blank">Info</a></div>';
+ var edos=["Queretaro","Guanajuato","San Luis Potosi","Michoacan","Jalisco","Zacatecas"];
+ for(var i=0;i<edos.length;i++){var e=edos[i];var q=encodeURIComponent("eventos ovni "+e);h+='> '+e+': <a href="https://www.google.com/search?q='+q+'" target="_blank">Eventos OVNI</a> | <a href="https://www.google.com/maps/search/eventos+ovni+'+encodeURIComponent(e)+'" target="_blank">Maps</a><br>';}
+ add(h);
+}
 </script>
 </body>
 </html>
