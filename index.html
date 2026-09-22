@@ -3,91 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BYSSEKERSS RADAR 24/7</title>
+<title>BYSSEKERSS RADAR FINAL</title>
 <style>
 body{background:#000;color:#0f0;font-family:monospace;padding:10px;margin:0}
-.header{border:2px solid #0f0;padding:15px;text-align:center;box-shadow:0 0 20px #0f0}
-.live{color:red;animation:blink 1s infinite}
-@keyframes blink{0%{opacity:1}50%{opacity:0}}
+.header{border:2px solid #0f0;padding:15px;text-align:center}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
 .card{border:1px solid #0f0;padding:10px}
-.card5{border:2px solid #ff0;grid-column:span 2;padding:10px;background:#111}
-button{background:#0f0;color:#000;border:none;padding:8px;font-weight:bold;width:100%;margin-top:5px;cursor:pointer}
-button.y{background:#ff0}
-.results{border:1px solid #0ff;margin-top:15px;padding:10px;color:#0ff;min-height:200px}
-.tag{display:inline-block;background:#111;border:1px solid #0f0;padding:3px 6px;margin:2px;font-size:11px}
-.countdown{color:#ff0;text-align:center;margin-top:10px}
+.cardB{border:2px solid #0ff;grid-column:span 2;padding:10px;background:#001122}
+.cardY{border:2px solid #ff0;grid-column:span 2;padding:10px;background:#111100}
+button{background:#0f0;color:#000;border:none;padding:8px;font-weight:bold;width:100%;margin-top:5px}
+button.b{background:#0ff} button.y{background:#ff0}
+.results{border:2px solid #ff0;margin-top:15px;padding:10px;color:#0ff;background:#111;min-height:250px}
 a{color:#0ff}
+.tag{display:inline-block;background:#111;border:1px solid #0f0;padding:3px 6px;margin:2px;font-size:11px}
 </style>
 </head>
 <body>
 <div class="header">
 <h2>BYSSEKERSS RADAR 24/7</h2>
-<div><span class="live">● LIVE</span> BYSEEKER 01 | 78 HASHTAGS</div>
-<div class="countdown" id="countdown">Proximo escaneo en: 10:00</div>
-<div style="font-size:11px;margin-top:5px">MODO: AUTO 10 MIN | SIN SONIDO</div>
+<div>● LIVE | SAN JUAN DEL RIO - BAJIO</div>
+<div id="countdown" style="color:#ff0">Proximo escaneo: 05:00</div>
 </div>
 
 <div class="grid">
-<div class="card"><b>GOBIERNO USA</b><div id="govStatus">En espera...</div><button onclick="scanGov()">ESCANEAR</button></div>
-<div class="card"><b>REDES / X</b><div id="xStatus">En espera...</div><button onclick="scanX()">ESCANEAR</button></div>
-<div class="card"><b>UFOLOGIA</b><div id="ufoStatus">En espera...</div><button onclick="scanUfo()">ESCANEAR</button></div>
-<div class="card"><b>FOROS</b><div id="astroStatus">En espera...</div><button onclick="scanAstro()">ESCANEAR</button></div>
-<div class="card5">
-<b style="color:#ff0;">APARTADO 5 - PUROS HASHTAGS (LOS TUYOS)</b>
-<div id="hashStatus" style="font-size:11px;margin:5px 0">78 hashtags listos</div>
-<button class="y" onclick="scanHashtags()">ESCANEAR HASHTAGS PUROS</button>
-<div id="hashContainer" style="margin-top:10px;max-height:150px;overflow-y:auto;background:#000;padding:5px"></div>
-</div>
+<div class="card"><b>1. GOBIERNO USA</b><div id="govStatus">En espera</div><button onclick="scanGov()">ESCANEAR GOB</button></div>
+<div class="card"><b>2. REDES / X</b><div id="xStatus">En espera</div><button class="b" onclick="scanX()">ESCANEAR REDES</button></div>
+<div class="cardY"><b>3. HASHTAGS PUROS</b><div id="hashStatus">78 tags</div><button class="y" onclick="scanHashtags()">ESCANEAR HASHTAGS</button><div id="hashBox" style="margin-top:5px;max-height:80px;overflow:auto;background:#000;padding:5px"></div></div>
+<div class="cardB"><b>4. EVENTOS BAJIO - TU RANGO (QRO,GTO,SLP,MICH,JAL,ZAC)</b><div id="qroStatus">Listo</div><button class="b" onclick="scanBajio()">ESCANEAR BAJIO (TU CIRCULO ROJO)</button><div id="qroBox" style="margin-top:5px;background:#000;padding:5px;font-size:11px"></div></div>
 </div>
 
 <div class="results">
-<b>RESULTADOS</b>
-<div id="results" style="margin-top:10px">Esperando escaneo...</div>
+<b style="color:#ff0">▼▼ AQUI ABAJO SALEN TODOS LOS RESULTADOS ▼▼▼</b>
+<div id="results" style="margin-top:10px">Esperando primer escaneo... Dale a cualquier boton de arriba.</div>
 </div>
 
 <script>
-var HASHTAGS = ["#UFO","#UAP","#NHI","#Alien","#Extraterrestrial","#Disclosure","#UFOTwitter","#UAPTwitter","#AlienAbduction","#Paranormal","#UFOsighting","#AlienDisclosure","#Contact","#NonHumanIntelligence","#UFOCommunity","#TheTruthIsOutThere","#OVNI","#FenomenoOVNI","#FenomenoNoHumano","#Extraterrestre","#Alienígena","#Divulgación","#Desclasificación","#ContactoExtraterrestre","#VidaExtraterrestre","#Abducción","#TercerMilenio","#JaimeMaussan","#ET","#FenomenoUFO","#Abdução","#Divulgação","#PAN","#Divulgation","#Alieno","#Paranormale","#Divulgazione","#UFOtok","#AlienTok","#SkinwalkerRanch","#Area51","#BobLazar","#DavidGrusch","#AARO","#GalileoProject","#SolFoundation","#4chanUFO","#TicTacUFO","#Gimbal","#GoFast","#UFOs"];
+var HASHTAGS=["#UFO","#UAP","#OVNI","#Paranormal","#Alien","#Extraterrestre","#Disclosure","#JaimeMaussan"];
+var timeLeft=300;
+function tick(){var m=Math.floor(timeLeft/60);var s=timeLeft%60;document.getElementById('countdown').innerText="Proximo escaneo: "+(m<10?"0"+m:m)+":"+(s<10?"0"+s:s);if(timeLeft>0)timeLeft--;else{scanAll();timeLeft=300;}}setInterval(tick,1000);
 
-var timeLeft = 600;
-function updateCountdown(){
-  var m = Math.floor(timeLeft/60);
-  var s = timeLeft % 60;
-  var mm = m < 10? "0"+m : m;
-  var ss = s < 10? "0"+s : s;
-  document.getElementById('countdown').innerText = "Proximo escaneo en: " + mm + ":" + ss;
-  if(timeLeft>0){ timeLeft--; } else { timeLeft=600; }
+function renderTags(){var h="";for(var i=0;i<HASHTAGS.length;i++){h+='<span class="tag">'+HASHTAGS[i]+'</span>';}document.getElementById('hashBox').innerHTML=h;}renderTags();
+
+function scanGov(){
+ var now=new Date().toLocaleTimeString();
+ document.getElementById('govStatus').innerHTML="Ultimo: "+now;
+ document.getElementById('results').innerHTML='<div style="color:#0f0">['+now+'] GOBIERNO USA</div><div>> AARO: <a href="https://www.aaro.mil" target="_blank">aaro.mil</a> - Revisa desclasificaciones</div><div>> NASA UAP: <a href="https://science.nasa.gov/uap" target="_blank">nasa.gov/uap</a></div>'+document.getElementById('results').innerHTML;
 }
-setInterval(updateCountdown,1000);
-
-function renderHashes(){
-  var html = "";
-  for(var i=0;i<HASHTAGS.length;i++){ html += '<span class="tag">'+HASHTAGS[i]+'</span>'; }
-  document.getElementById('hashContainer').innerHTML = html;
-}
-renderHashes();
-
-function scanGov(){ document.getElementById('govStatus').innerHTML = "Escaneando...<br>Check: aaro.mil"; setTimeout(function(){ document.getElementById('govStatus').innerHTML = "Ultimo: "+new Date().toLocaleTimeString(); },1000); }
-function scanUfo(){ document.getElementById('ufoStatus').innerHTML = "Escaneando..."; setTimeout(function(){ document.getElementById('ufoStatus').innerHTML = "Ultimo: "+new Date().toLocaleTimeString(); },1000); }
-function scanAstro(){ document.getElementById('astroStatus').innerHTML = "Escaneando..."; setTimeout(function(){ document.getElementById('astroStatus').innerHTML = "Ultimo: "+new Date().toLocaleTimeString(); },1000); }
-
+function scanX(){scanHashtags();}
 function scanHashtags(){
-  var now = new Date().toLocaleTimeString();
-  document.getElementById('hashStatus').innerHTML = "Escaneado: " + now;
-  document.getElementById('xStatus').innerHTML = "Ultimo: " + now;
-  var links = "";
-  for(var i=0;i<HASHTAGS.length;i++){
-    var tag = HASHTAGS[i];
-    var q = encodeURIComponent(tag);
-    links += '<div style="margin:4px 0">> <a href="https://x.com/search?q='+q+'&f=live" target="_blank">'+tag+' -> X Live</a></div>';
-  }
-  document.getElementById('results').innerHTML = '<div style="color:#0f0">['+now+'] ESCANEO HASHTAGS PUROS - '+HASHTAGS.length+' tags</div>' + links;
-  timeLeft = 600;
+ var now=new Date().toLocaleTimeString();
+ document.getElementById('xStatus').innerHTML="Ultimo: "+now;
+ document.getElementById('hashStatus').innerHTML="Escaneado: "+now;
+ var html='<div style="color:#ff0">['+now+'] REDES / HASHTAGS PUROS</div>';
+ for(var i=0;i<HASHTAGS.length;i++){var q=encodeURIComponent(HASHTAGS[i]);html+='<div>> <a href="https://x.com/search?q='+q+'&f=live" target="_blank">'+HASHTAGS[i]+' en X Live</a></div>';}
+ document.getElementById('results').innerHTML=html+document.getElementById('results').innerHTML;
 }
-function scanX(){ scanHashtags(); }
-function scanAllAuto(){ scanGov(); scanUfo(); scanAstro(); scanHashtags(); }
-setTimeout(scanAllAuto,2000);
-setInterval(scanAllAuto,10*60*1000);
+function scanBajio(){
+ var now=new Date().toLocaleTimeString();
+ document.getElementById('qroStatus').innerHTML="Escaneado Bajio: "+now;
+ var html='<div style="color:#0ff">['+now+'] EVENTOS BAJIO - TU RANGO DE MAPA</div>';
+ html+='<div style="border:1px solid #ff00ff;padding:5px;margin:5px 0"><b>17 OCT 2026 - CONGRESO NO HUMANO QUERETARO</b><br><a href="https://www.google.com/search?q=congreso+no+humano+queretaro+2026" target="_blank">Ver info</a></div>';
+ html+='<div>Busqueda por tu circulo rojo:</div>';
+ var estados=["Queretaro","Guanajuato","San Luis Potosi","Michoacan","Jalisco","Zacatecas"];
+ for(var i=0;i<estados.length;i++){var e=estados[i];var q=encodeURIComponent("eventos ovni paranormal "+e);html+='<div>> '+e+': <a href="https://www.google.com/search?q='+q+'" target="_blank">Google</a> | <a href="https://www.google.com/maps/search/eventos+ovni+'+encodeURIComponent(e)+'" target="_blank">Maps</a></div>';}
+ document.getElementById('qroBox').innerHTML=html;
+ document.getElementById('results').innerHTML=html+'<hr>'+document.getElementById('results').innerHTML;
+}
+function scanAll(){scanGov();scanHashtags();scanBajio();}
+setTimeout(scanAll,1500);
 </script>
 </body>
 </html>
