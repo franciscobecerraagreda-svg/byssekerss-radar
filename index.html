@@ -85,5 +85,12 @@ function scanAllAuto(){
 setTimeout(scanAllAuto, 2000);
 setInterval(scanAllAuto, 10*60*1000);
 </script>
+function scanHashtags(){
+  document.getElementById('hashStatus').innerHTML = 'Escaneando 78 hashtags...';
+  document.getElementById('hashListMini').innerHTML = HASHTAGS_BYSSEKERSS.join(' ');
+  scanX();
+  document.getElementById('hashStatus').innerHTML = 'Último: '+new Date().toLocaleTimeString()+'<br>78 hashtags escaneados';
+}
+document.getElementById('hashListMini').innerHTML = HASHTAGS_BYSSEKERSS.slice(0,20).join(' ') + '...';
 </body>
 </html>
