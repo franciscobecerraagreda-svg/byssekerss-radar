@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYSSEKERSS RADAR 24/7</title>
+<style>
+body{background:#050a0f;color:#00ff41;font-family:monospace;margin:0;padding:15px}
+.header{border:1px solid #00ff41;padding:15px;text-align:center;box-shadow:0 0 10px #00ff41}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}
+.card{border:1px solid #00ff41;padding:12px;background:#0a141e}
+.card h3{margin:0 0 10px 0;color:#fff;font-size:14px}
+.live{color:#ff0040;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+button{background:#00ff41;color:#000;border:none;padding:8px 12px;cursor:pointer;font-weight:bold;margin-top:8px;width:100%}
+.status{font-size:11px;opacity:0.7;margin-top:5px}
+#feed{margin-top:15px}
+.item{border-bottom:1px dashed #00ff41;padding:8px 0;font-size:12px}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>BYSSEKERSS RADAR 24/7</h1>
+<p><span class="live">● LIVE</span> BYSEEKER 01 | Protocol Activo | Clave: 01</p>
+</div>
+
+<div class="grid">
+<div class="card"><h3>🏛️ GOBIERNO USA</h3><button onclick="load('gobierno')">ESCANEAR</button><div id="gobierno" class="status">Esperando...</div></div>
+<div class="card"><h3>📡 REDES / X</h3><button onclick="load('redes')">ESCANEAR</button><div id="redes" class="status">Esperando...</div></div>
+<div class="card"><h3>👽 UFOLOGÍA</h3><button onclick="load('ufologia')">ESCANEAR</button><div id="ufologia" class="status">Esperando...</div></div>
+<div class="card"><h3>🌌 FOROS ASTRONOMIA</h3><button onclick="load('foros')">ESCANEAR</button><div id="foros" class="status">Esperando...</div></div>
+</div>
+
+<div id="feed"></div>
+
+<script>
+if(localStorage.getItem('bysseekerss')!=='ok'){window.location.href='index.html'}
+async function load(tipo){
+ document.getElementById(tipo).innerText='Escaneando '+tipo+'...';
+ try{
+  let r=await fetch('/api/'+tipo);
+  let d=await r.json();
+  document.getElementById(tipo).innerText='✓ '+d.count+' hallazgos - '+new Date().toLocaleTimeString();
+  let feed=document.getElementById('feed');
+  feed.innerHTML='<h3>RESULTADOS: '+tipo.toUpperCase()+'</h3>'+d.items.map(i=>'<div class=item><b>'+i.titulo+'</b><br>'+i.desc+'<br><a href="'+i.link+'" target="_blank" style="color:#00ff41">'+i.link+'</a></div>').join('');
+ }catch(e){
+  document.getElementById(tipo).innerText='Modo DEMO - API aun no desplegada en Vercel';
+ }
+}
+</script>
+</body>
+</html>
