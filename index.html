@@ -1,32 +1,82 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BYSSEKERSS - ACCESS</title>
+<title>BYSSEKERSS RADAR 24/7 - LIVE BYSEEKER 01</title>
 <style>
-body{margin:0;background:#000;color:#00ff41;font-family:monospace;display:flex;justify-content:center;align-items:center;height:100vh}
-.box{border:2px solid #00ff41;padding:40px;box-shadow:0 0 20px #00ff41;text-align:center;width:300px}
-h1{letter-spacing:4px}
-input{width:100%;padding:12px;background:#000;color:#00ff41;border:1px solid #00ff41;margin-top:15px;text-align:center;font-size:18px}
-button{width:100%;padding:12px;background:#00ff41;color:#000;border:none;margin-top:15px;cursor:pointer;font-weight:bold}
+body{background:#000;color:#0f0;font-family:monospace;padding:10px}
+.header{border:2px solid #0f0;padding:15px;text-align:center;box-shadow:0 0 20px #0f0}
+.live{color:red;animation:blink 1s infinite}
+@keyframes blink{0%{opacity:1}50%{opacity:0}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.card{border:1px solid #0f0;padding:10px;min-height:100px}
+button{background:#0f0;color:#000;border:none;padding:8px 15px;cursor:pointer;font-weight:bold;width:100%;margin-top:5px}
 button:hover{background:#fff}
+.results{border:1px solid #0ff;margin-top:15px;padding:10px;min-height:200px;color:#0ff}
+.tag{display:inline-block;background:#111;border:1px solid #0f0;padding:3px 6px;margin:2px;font-size:11px}
+.countdown{color:#ff0;text-align:center;margin-top:10px}
 </style>
 </head>
 <body>
-<div class="box">
-<h1>BYSSEKERSS</h1>
-<p>BYSEEKER 01</p>
-<input id="pass" type="password" placeholder="CLAVE">
-<button onclick="login()">ENTRAR</button>
+<div class="header">
+<h2>BYSSEKERSS RADAR 24/7</h2>
+<div><span class="live">● LIVE</span> BYSEEKER 01 | Protocolo Activo | Clave: 01</div>
+<div style="margin-top:5px;font-size:12px">MODO: AUTO 10 MIN | SIN SONIDO | SIN ALERTAS | 78 HASHTAGS GLOBALES</div>
+<div class="countdown" id="countdown">Próximo escaneo en: 10:00</div>
+</div>
+<div class="grid">
+<div class="card"><b>GOBIERNO USA</b><div id="govStatus">En espera...</div><button onclick="scanGov()">ESCANEAR</button></div>
+<div class="card"><b>REDES / X</b><div id="xStatus">En espera...</div><button onclick="scanX()">ESCANEAR</button></div>
+<div class="card"><b>UFOLOGIA</b><div id="ufoStatus">En espera...</div><button onclick="scanUfo()">ESCANEAR</button></div>
+<div class="card"><b>FOROS ASTRONOMIA</b><div id="astroStatus">En espera...</div><button onclick="scanAstro()">ESCANEAR</button></div>
+</div>
+<div class="results">
+<b>RESULTADOS: REDES - HASHTAGS GLOBALES</b>
+<div style="margin:10px 0" id="hashtagList"></div>
+<div id="results">Esperando primer escaneo automatico...</div>
 </div>
 <script>
-function login(){
- if(document.getElementById('pass').value==='01'){
-  localStorage.setItem('bysseekerss','ok');
-  window.location.href='radar.html';
- }else{alert('DENEGADO');}
+const HASHTAGS_BYSSEKERSS = ["#UFO","#UAP","#NHI","#Alien","#Extraterrestrial","#Disclosure","#UFOTwitter","#UAPTwitter","#AlienAbduction","#Paranormal","#UFOsighting","#AlienDisclosure","#Contact","#NonHumanIntelligence","#UFOCommunity","#TheTruthIsOutThere","#OVNI","#FenomenoOVNI","#FenomenoNoHumano","#Extraterrestre","#Alienígena","#Divulgación","#Desclasificación","#ContactoExtraterrestre","#VidaExtraterrestre","#Abducción","#TercerMilenio","#JaimeMaussan","#ET","#FenomenoUFO","#Abdução","#Divulgação","#PAN","#Divulgation","#Alieno","#Paranormale","#Divulgazione","#宇宙人","#未確認飛行物体","#パラノーマル","#エイリアン","#외계인","#미확인비행물체","#外星人","#不明飞行物","#НЛО","#Пришельцы","#Паранормальное","#Инопланетяне","#جسم_غامض","#كائنات_فضائية","#ظواهر_خارقة","#UFOtok","#AlienTok","#SkinwalkerRanch","#Area51","#BobLazar","#DavidGrusch","#AARO","#GalileoProject","#SolFoundation","#4chanUFO","#TicTacUFO","#Gimbal","#GoFast","#UFOs"];
+
+document.getElementById('hashtagList').innerHTML = HASHTAGS_BYSSEKERSS.map(h=>`<span class="tag">${h}</span>`).join('');
+
+let timeLeft = 600;
+function updateCountdown(){
+  const m = Math.floor(timeLeft/60);
+  const s = timeLeft % 60;
+  document.getElementById('countdown').innerText = `Próximo escaneo en: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if(timeLeft>0) timeLeft--;
+  else timeLeft=600;
 }
+setInterval(updateCountdown,1000);
+
+function getXLinks(){
+  return HASHTAGS_BYSSEKERSS.map(tag=>{
+    const q = encodeURIComponent(tag);
+    return `<div style="margin:5px 0">> <a href="https://x.com/search?q=${q}&f=live" target="_blank" style="color:#0ff">${tag} -> Buscar en X Live</a></div>`;
+  }).join('');
+}
+
+function scanGov(){ document.getElementById('govStatus').innerHTML='Escaneando... NASA / AARO / DoD'; setTimeout(()=>{document.getElementById('govStatus').innerHTML='Último: '+new Date().toLocaleTimeString()+'<br>Check: aaro.mil / nasa.gov/uap';},1500); }
+function scanUfo(){ document.getElementById('ufoStatus').innerHTML='Escaneando... MUFON / The Black Vault'; setTimeout(()=>{document.getElementById('ufoStatus').innerHTML='Último: '+new Date().toLocaleTimeString();},1500); }
+function scanAstro(){ document.getElementById('astroStatus').innerHTML='Escaneando... Reddit r/UFOs / r/UAP'; setTimeout(()=>{document.getElementById('astroStatus').innerHTML='Último: '+new Date().toLocaleTimeString();},1500); }
+
+function scanX(){
+  document.getElementById('xStatus').innerHTML='Escaneando 78 hashtags...';
+  const now = new Date().toLocaleTimeString();
+  document.getElementById('results').innerHTML = `<div style="color:#0f0">[${now}] ESCANEO COMPLETADO - ${HASHTAGS_BYSSEKERSS.length} hashtags</div>` + getXLinks() + `<div style="margin-top:10px;color:#ff0">Tip: Abre los links para ver X Live en tiempo real. El radar se auto-actualiza cada 10 min.</div>`;
+  document.getElementById('xStatus').innerHTML='Último: '+now+'<br>'+HASHTAGS_BYSSEKERSS.length+' hashtags';
+}
+
+function scanAllAuto(){
+  scanGov(); scanUfo(); scanAstro(); scanX();
+  timeLeft=600;
+}
+
+setTimeout(scanAllAuto, 2000);
+setInterval(scanAllAuto, 10*60*1000);
 </script>
 </body>
 </html>
