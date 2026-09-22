@@ -1,29 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYSSEKERSS RADAR 24/7</title>
+<style>
+body{background:#000;color:#0f0;font-family:monospace;padding:10px;margin:0}
+.header{border:2px solid #0f0;padding:15px;text-align:center;box-shadow:0 0 20px #0f0}
+.live{color:red;animation:blink 1s infinite}
+@keyframes blink{0%{opacity:1}50%{opacity:0}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.card{border:1px solid #0f0;padding:10px}
+.card5{border:2px solid #ff0;grid-column:span 2;padding:10px;background:#111}
+button{background:#0f0;color:#000;border:none;padding:8px;font-weight:bold;width:100%;margin-top:5px;cursor:pointer}
+button.y{background:#ff0}
+.results{border:1px solid #0ff;margin-top:15px;padding:10px;color:#0ff;min-height:200px}
+.tag{display:inline-block;background:#111;border:1px solid #0f0;padding:3px 6px;margin:2px;font-size:11px}
+.countdown{color:#ff0;text-align:center;margin-top:10px}
+a{color:#0ff}
+</style>
+</head>
+<body>
+<div class="header">
+<h2>BYSSEKERSS RADAR 24/7</h2>
+<div><span class="live">● LIVE</span> BYSEEKER 01 | 78 HASHTAGS</div>
+<div class="countdown" id="countdown">Proximo escaneo en: 10:00</div>
+<div style="font-size:11px;margin-top:5px">MODO: AUTO 10 MIN | SIN SONIDO</div>
+</div>
 
-+'<br>Check: aaro.mil / nasa.gov/uap';},1500); }
-function scanUfo(){ document.getElementById('ufoStatus').innerHTML='Escaneando... MUFON / The Black Vault'; setTimeout(()=>{document.getElementById('ufoStatus').innerHTML='Último: '+new Date().toLocaleTimeString();},1500); }
-function scanAstro(){ document.getElementById('astroStatus').innerHTML='Escaneando... Reddit r/UFOs / r/UAP'; setTimeout(()=>{document.getElementById('astroStatus').innerHTML='Último: '+new Date().toLocaleTimeString();},1500); }
+<div class="grid">
+<div class="card"><b>GOBIERNO USA</b><div id="govStatus">En espera...</div><button onclick="scanGov()">ESCANEAR</button></div>
+<div class="card"><b>REDES / X</b><div id="xStatus">En espera...</div><button onclick="scanX()">ESCANEAR</button></div>
+<div class="card"><b>UFOLOGIA</b><div id="ufoStatus">En espera...</div><button onclick="scanUfo()">ESCANEAR</button></div>
+<div class="card"><b>FOROS</b><div id="astroStatus">En espera...</div><button onclick="scanAstro()">ESCANEAR</button></div>
+<div class="card5">
+<b style="color:#ff0;">APARTADO 5 - PUROS HASHTAGS (LOS TUYOS)</b>
+<div id="hashStatus" style="font-size:11px;margin:5px 0">78 hashtags listos</div>
+<button class="y" onclick="scanHashtags()">ESCANEAR HASHTAGS PUROS</button>
+<div id="hashContainer" style="margin-top:10px;max-height:150px;overflow-y:auto;background:#000;padding:5px"></div>
+</div>
+</div>
 
-function scanX(){
-  document.getElementById('xStatus').innerHTML='Escaneando 78 hashtags...';
-  const now = new Date().toLocaleTimeString();
-  document.getElementById('results').innerHTML = `<div style="color:#0f0">[${now}] ESCANEO COMPLETADO - ${HASHTAGS_BYSSEKERSS.length} hashtags</div>` + getXLinks() + `<div style="margin-top:10px;color:#ff0">Tip: Abre los links para ver X Live en tiempo real. El radar se auto-actualiza cada 10 min.</div>`;
-  document.getElementById('xStatus').innerHTML='Último: '+now+'<br>'+HASHTAGS_BYSSEKERSS.length+' hashtags';
+<div class="results">
+<b>RESULTADOS</b>
+<div id="results" style="margin-top:10px">Esperando escaneo...</div>
+</div>
+
+<script>
+var HASHTAGS = ["#UFO","#UAP","#NHI","#Alien","#Extraterrestrial","#Disclosure","#UFOTwitter","#UAPTwitter","#AlienAbduction","#Paranormal","#UFOsighting","#AlienDisclosure","#Contact","#NonHumanIntelligence","#UFOCommunity","#TheTruthIsOutThere","#OVNI","#FenomenoOVNI","#FenomenoNoHumano","#Extraterrestre","#Alienígena","#Divulgación","#Desclasificación","#ContactoExtraterrestre","#VidaExtraterrestre","#Abducción","#TercerMilenio","#JaimeMaussan","#ET","#FenomenoUFO","#Abdução","#Divulgação","#PAN","#Divulgation","#Alieno","#Paranormale","#Divulgazione","#UFOtok","#AlienTok","#SkinwalkerRanch","#Area51","#BobLazar","#DavidGrusch","#AARO","#GalileoProject","#SolFoundation","#4chanUFO","#TicTacUFO","#Gimbal","#GoFast","#UFOs"];
+
+var timeLeft = 600;
+function updateCountdown(){
+  var m = Math.floor(timeLeft/60);
+  var s = timeLeft % 60;
+  var mm = m < 10? "0"+m : m;
+  var ss = s < 10? "0"+s : s;
+  document.getElementById('countdown').innerText = "Proximo escaneo en: " + mm + ":" + ss;
+  if(timeLeft>0){ timeLeft--; } else { timeLeft=600; }
 }
+setInterval(updateCountdown,1000);
 
-function scanAllAuto(){
-  scanGov(); scanUfo(); scanAstro(); scanX();
-  timeLeft=600;
+function renderHashes(){
+  var html = "";
+  for(var i=0;i<HASHTAGS.length;i++){ html += '<span class="tag">'+HASHTAGS[i]+'</span>'; }
+  document.getElementById('hashContainer').innerHTML = html;
 }
+renderHashes();
 
-setTimeout(scanAllAuto, 2000);
-setInterval(scanAllAuto, 10*60*1000);
-</script>
+function scanGov(){ document.getElementById('govStatus').innerHTML = "Escaneando...<br>Check: aaro.mil"; setTimeout(function(){ document.getElementById('govStatus').innerHTML = "Ultimo: "+new Date().toLocaleTimeString(); },1000); }
+function scanUfo(){ document.getElementById('ufoStatus').innerHTML = "Escaneando..."; setTimeout(function(){ document.getElementById('ufoStatus').innerHTML = "Ultimo: "+new Date().toLocaleTimeString(); },1000); }
+function scanAstro(){ document.getElementById('astroStatus').innerHTML = "Escaneando..."; setTimeout(function(){ document.getElementById('astroStatus').innerHTML = "Ultimo: "+new Date().toLocaleTimeString(); },1000); }
+
 function scanHashtags(){
-  document.getElementById('hashStatus').innerHTML = 'Escaneando 78 hashtags...';
-  document.getElementById('hashListMini').innerHTML = HASHTAGS_BYSSEKERSS.join(' ');
-  scanX();
-  document.getElementById('hashStatus').innerHTML = 'Último: '+new Date().toLocaleTimeString()+'<br>78 hashtags escaneados';
+  var now = new Date().toLocaleTimeString();
+  document.getElementById('hashStatus').innerHTML = "Escaneado: " + now;
+  document.getElementById('xStatus').innerHTML = "Ultimo: " + now;
+  var links = "";
+  for(var i=0;i<HASHTAGS.length;i++){
+    var tag = HASHTAGS[i];
+    var q = encodeURIComponent(tag);
+    links += '<div style="margin:4px 0">> <a href="https://x.com/search?q='+q+'&f=live" target="_blank">'+tag+' -> X Live</a></div>';
+  }
+  document.getElementById('results').innerHTML = '<div style="color:#0f0">['+now+'] ESCANEO HASHTAGS PUROS - '+HASHTAGS.length+' tags</div>' + links;
+  timeLeft = 600;
 }
-document.getElementById('hashListMini').innerHTML = HASHTAGS_BYSSEKERSS.slice(0,20).join(' ') + '...';
+function scanX(){ scanHashtags(); }
+function scanAllAuto(){ scanGov(); scanUfo(); scanAstro(); scanHashtags(); }
+setTimeout(scanAllAuto,2000);
+setInterval(scanAllAuto,10*60*1000);
+</script>
 </body>
 </html>
